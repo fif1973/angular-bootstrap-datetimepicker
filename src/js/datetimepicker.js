@@ -136,7 +136,8 @@
         '</table></div>',
         scope: {
           onSetTime: '&',
-          beforeRender: '&'
+          beforeRender: '&',
+          dependOn:'='
         },
         replace: true,
         link: function link(scope, element, attrs, ngModelController) {
@@ -157,6 +158,11 @@
             var startYear = (parseInt(moment.utc(unixDate).year() / 10, 10) * 10);
             return moment.utc(unixDate).year(startYear).startOf('year');
           };
+
+          scope.$watch('dependOn',function(newDate){
+              if(newDate)
+                  ngModelController.$render();
+          });
 
           var dataFactory = {
             year: function year(unixDate) {
